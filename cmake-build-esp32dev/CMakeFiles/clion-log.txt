@@ -1,0 +1,4 @@
+/home/yoisy/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/203.7148.70/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=esp32dev -G "CodeBlocks - Unix Makefiles" "/home/yoisy/src/Arduino Thomas the Tank Engine"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev

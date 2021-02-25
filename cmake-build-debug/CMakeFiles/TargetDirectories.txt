@@ -1,0 +1,5 @@
+/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-debug/CMakeFiles/Production.dir
+/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-debug/CMakeFiles/Debug.dir
+/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-debug/CMakeFiles/Z_DUMMY_TARGET.dir
