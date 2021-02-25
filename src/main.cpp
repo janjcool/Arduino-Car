@@ -2,93 +2,93 @@
 
 class Motor {
 public:
-    int pwmChannel;
-    int dutyCycle = 200;
-    int Pin1;
-    int Pin2;
+    int pwm_Channel{};
+    int duty_cycle = 200;
+    int pin_1{};
+    int pin_2{};
 
-    void init(int MotorPin1, int MotorPin2, int enable1Pin, int freq,
+    void Init(int MotorPin1, int MotorPin2, int enable1Pin, int freq,
               int MotorPWMChannel, int resolution, int MotorDutyCycle) {
         Serial.println("Initializing motor");
-        pwmChannel = MotorPWMChannel;
-        dutyCycle = MotorDutyCycle;
-        Pin1 = MotorPin1;
-        Pin2 = MotorPin2;
+        pwm_Channel = MotorPWMChannel;
+        duty_cycle = MotorDutyCycle;
+        pin_1 = MotorPin1;
+        pin_2 = MotorPin2;
 
         // sets the pins as outputs:
-        pinMode(Pin1, OUTPUT);
-        pinMode(Pin2, OUTPUT);
+        pinMode(pin_1, OUTPUT);
+        pinMode(pin_2, OUTPUT);
         pinMode(enable1Pin, OUTPUT);
 
         // configure PWM
-        ledcSetup(pwmChannel, freq, resolution);
+        ledcSetup(pwm_Channel, freq, resolution);
 
         // attach the channel to the GPIO to be controlled
-        ledcAttachPin(enable1Pin, pwmChannel);
+        ledcAttachPin(enable1Pin, pwm_Channel);
 
-        ledcWrite(pwmChannel, dutyCycle);
+        ledcWrite(pwm_Channel, duty_cycle);
         Serial.print("Motor initialized at pwm channel ");
-        Serial.println(pwmChannel);
+        Serial.println(pwm_Channel);
     }
 
-    void stop() const {
+    void Stop() const {
         Serial.print("Stop motor at pwm channel ");
-        Serial.println(pwmChannel);
+        Serial.println(pwm_Channel);
 
-        digitalWrite(Pin1, LOW);
-        digitalWrite(Pin2, LOW);
+        digitalWrite(pin_1, LOW);
+        digitalWrite(pin_2, LOW);
     }
 
-    void backwards() const {
-        Serial.print("Moving motor backwards at pwm channel ");
-        Serial.println(pwmChannel);
+    void Backwards() const {
+        Serial.print("Moving motor Backwards at pwm channel ");
+        Serial.println(pwm_Channel);
 
-        digitalWrite(Pin1, HIGH);
-        digitalWrite(Pin2, LOW);
+        digitalWrite(pin_1, HIGH);
+        digitalWrite(pin_2, LOW);
     }
 
-    void forward() const {
-        Serial.print("Moving motor forward at pwm channel ");
-        Serial.println(pwmChannel);
+    void Forward() const {
+        Serial.print("Moving motor Forward at pwm channel ");
+        Serial.println(pwm_Channel);
 
-        digitalWrite(Pin1, LOW);
-        digitalWrite(Pin2, HIGH);
+        digitalWrite(pin_1, LOW);
+        digitalWrite(pin_2, HIGH);
     }
 
-    void update_dutyCycle() const {
+    void UpdateDutyCycle() const {
         Serial.print("Forward with duty cycle ");
-        Serial.print(dutyCycle);
+        Serial.print(duty_cycle);
         Serial.print(" at pwm channel ");
-        Serial.println(pwmChannel);
+        Serial.println(pwm_Channel);
 
-        ledcWrite(pwmChannel, dutyCycle);
+        ledcWrite(pwm_Channel, duty_cycle);
     }
 };
 
-Motor leftMotor;
-Motor rightMotor;
+Motor left_motor;
+Motor right_motor;
 
 void setup() {
     // begin serial connect
     Serial.begin(115200);
     Serial.println("Begin of setup");
 
-    // init motors
-    leftMotor.init(27, 26, 14, 30000, 0, 8, 200);
-    rightMotor.init(25, 33, 32, 30000, 1, 8, 200);
+    // Init motors
+    left_motor.Init(27, 26, 14, 30000, 0, 8, 200);
+    right_motor.Init(25, 33, 32, 30000, 1, 8, 200);
 
     Serial.println("End of setup");
 }
 
 void loop() {
-    leftMotor.forward();
-    rightMotor.forward();
+    left_motor.Forward();
+    right_motor.Forward();
     delay(2000);
 
-    leftMotor.stop();
-    rightMotor.stop();
+    left_motor.Stop();
+    right_motor.Stop();
     delay(1000);
 
-    leftMotor.dutyCycle = 150;
-    leftMotor.update_dutyCycle();
+    left_motor.duty_cycle = 150;
+    left_motor.UpdateDutyCycle();
 }
