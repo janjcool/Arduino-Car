@@ -131,19 +131,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Production
-
-# Build rule for target.
-Production: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Production
-.PHONY : Production
-
-# fast build rule for target.
-Production/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Production.dir/build.make CMakeFiles/Production.dir/build
-.PHONY : Production/fast
-
-#=============================================================================
 # Target rules for targets named Debug
 
 # Build rule for target.
@@ -157,71 +144,17 @@ Debug/fast:
 .PHONY : Debug/fast
 
 #=============================================================================
-# Target rules for targets named Z_DUMMY_TARGET
+# Target rules for targets named Production
 
 # Build rule for target.
-Z_DUMMY_TARGET: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Z_DUMMY_TARGET
-.PHONY : Z_DUMMY_TARGET
+Production: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Production
+.PHONY : Production
 
 # fast build rule for target.
-Z_DUMMY_TARGET/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/build
-.PHONY : Z_DUMMY_TARGET/fast
-
-src/leerkracht.obj: src/leerkracht.cpp.obj
-
-.PHONY : src/leerkracht.obj
-
-# target to build an object file
-src/leerkracht.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/src/leerkracht.cpp.obj
-.PHONY : src/leerkracht.cpp.obj
-
-src/leerkracht.i: src/leerkracht.cpp.i
-
-.PHONY : src/leerkracht.i
-
-# target to preprocess a source file
-src/leerkracht.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/src/leerkracht.cpp.i
-.PHONY : src/leerkracht.cpp.i
-
-src/leerkracht.s: src/leerkracht.cpp.s
-
-.PHONY : src/leerkracht.s
-
-# target to generate assembly for a file
-src/leerkracht.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/src/leerkracht.cpp.s
-.PHONY : src/leerkracht.cpp.s
-
-src/main.obj: src/main.cpp.obj
-
-.PHONY : src/main.obj
-
-# target to build an object file
-src/main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/src/main.cpp.obj
-.PHONY : src/main.cpp.obj
-
-src/main.i: src/main.cpp.i
-
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
+Production/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Production.dir/build.make CMakeFiles/Production.dir/build
+.PHONY : Production/fast
 
 # Help Target
 help:
@@ -233,13 +166,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Debug"
 	@echo "... Production"
-	@echo "... Z_DUMMY_TARGET"
-	@echo "... src/leerkracht.obj"
-	@echo "... src/leerkracht.i"
-	@echo "... src/leerkracht.s"
-	@echo "... src/main.obj"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
 .PHONY : help
 
 

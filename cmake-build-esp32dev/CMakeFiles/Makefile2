@@ -73,9 +73,8 @@ CMAKE_BINARY_DIR = "/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-e
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Production.dir/all
 all: CMakeFiles/Debug.dir/all
-all: CMakeFiles/Z_DUMMY_TARGET.dir/all
+all: CMakeFiles/Production.dir/all
 
 .PHONY : all
 
@@ -85,38 +84,10 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Production.dir/clean
 clean: CMakeFiles/Debug.dir/clean
-clean: CMakeFiles/Z_DUMMY_TARGET.dir/clean
+clean: CMakeFiles/Production.dir/clean
 
 .PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/Production.dir
-
-# All Build rule for target.
-CMakeFiles/Production.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Production.dir/build.make CMakeFiles/Production.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Production.dir/build.make CMakeFiles/Production.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles" --progress-num= "Built target Production"
-.PHONY : CMakeFiles/Production.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/Production.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles" 0
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Production.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles" 0
-.PHONY : CMakeFiles/Production.dir/rule
-
-# Convenience name for target.
-Production: CMakeFiles/Production.dir/rule
-
-.PHONY : Production
-
-# clean rule for target.
-CMakeFiles/Production.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Production.dir/build.make CMakeFiles/Production.dir/clean
-.PHONY : CMakeFiles/Production.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/Debug.dir
@@ -146,31 +117,31 @@ CMakeFiles/Debug.dir/clean:
 .PHONY : CMakeFiles/Debug.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Z_DUMMY_TARGET.dir
+# Target rules for target CMakeFiles/Production.dir
 
 # All Build rule for target.
-CMakeFiles/Z_DUMMY_TARGET.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles" --progress-num=1,2,3 "Built target Z_DUMMY_TARGET"
-.PHONY : CMakeFiles/Z_DUMMY_TARGET.dir/all
+CMakeFiles/Production.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Production.dir/build.make CMakeFiles/Production.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Production.dir/build.make CMakeFiles/Production.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles" --progress-num= "Built target Production"
+.PHONY : CMakeFiles/Production.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Z_DUMMY_TARGET.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles" 3
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Z_DUMMY_TARGET.dir/all
+CMakeFiles/Production.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start "/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles" 0
-.PHONY : CMakeFiles/Z_DUMMY_TARGET.dir/rule
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Production.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles" 0
+.PHONY : CMakeFiles/Production.dir/rule
 
 # Convenience name for target.
-Z_DUMMY_TARGET: CMakeFiles/Z_DUMMY_TARGET.dir/rule
+Production: CMakeFiles/Production.dir/rule
 
-.PHONY : Z_DUMMY_TARGET
+.PHONY : Production
 
 # clean rule for target.
-CMakeFiles/Z_DUMMY_TARGET.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Z_DUMMY_TARGET.dir/build.make CMakeFiles/Z_DUMMY_TARGET.dir/clean
-.PHONY : CMakeFiles/Z_DUMMY_TARGET.dir/clean
+CMakeFiles/Production.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Production.dir/build.make CMakeFiles/Production.dir/clean
+.PHONY : CMakeFiles/Production.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
