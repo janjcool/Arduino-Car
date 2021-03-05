@@ -65,7 +65,7 @@ EQUALS = =
 # The top-level source directory on which CMake was run.
 CMAKE_SOURCE_DIR = "/home/yoisy/src/Arduino Thomas the Tank Engine"
 
-# The top-level build directory on which CMake was run.
+# The top-level build directory On which CMake was run.
 CMAKE_BINARY_DIR = "/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-debug"
 
 # Include any dependencies generated for this target.

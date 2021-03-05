@@ -1,10 +1,14 @@
 /* links:
  *      - multi threading: https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/
+ *                         and https://savjee.be/2020/01/multitasking-esp32-arduino-freertos/
  *      - hobby gear motor: https://randomnerdtutorials.com/esp32-dc-motor-l298n-motor-driver-control-speed-direction/
- *      -
+ * docs:
+ *      - multi threading: https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/freertos.html
  */
 
 #include <Arduino.h>  // remove this line if you are using arduino
+
+void CoreZeroLoop( void * pvParameters );
 
 class Motor {
 public:
@@ -82,36 +86,35 @@ public:
     const int PWM_RESOLUTION = 8;
 
     void Init(int LedPin, int LedPWMChannel) {
-        // save parameters in public variables
+        // Save parameters in public variables
         pwm_channel = LedPWMChannel;
         pin = LedPin;
 
-        // sets the pin as output
+        // Sets the pin as output
         pinMode(pin, OUTPUT);
 
-        // configure PWM
+        // Configure PWM
         ledcSetup(pwm_channel, pwm_frequency, PWM_RESOLUTION);
 
-        // attach the channel to the GPIO to be controlled
+        // Attach the channel to the GPIO to be controlled
         ledcAttachPin(pin, pwm_channel);
-
-        ledcWrite(pwm_channel, duty_cycle);
+        UpdateDutyCycle();
 
         Serial.print("Led initialized at pwm channel ");
         Serial.println(pwm_channel);
     }
 
-    void off() {
+    void Off() {
         duty_cycle = 0;
         UpdateDutyCycle();
     }
 
-    void on() {
+    void On() {
         duty_cycle = 255;
         UpdateDutyCycle();
     }
 
-    void fade_on(int step_time) {
+    void FadeOn(int step_time) {
         Serial.println("Start of led fading on");
         duty_cycle = 0;
 
@@ -121,7 +124,7 @@ public:
         }
     }
 
-    void fade_off(int step_time) {
+    void FadeOff(int step_time) {
         Serial.println("Start of led fading off");
         duty_cycle = 255;
 
@@ -142,13 +145,21 @@ public:
     }
 };
 
+// Init motor object
 Motor left_motor;
 Motor right_motor;
 
+// Init LED object
 LED red_led1;
 LED red_led2;
 
-const int IR_sensor = 7;
+// Init multi threading task handler object
+TaskHandle_t TaskHandler;
+
+// Init variables
+const int IR_sensor_pin = 17;
+int previous_state_of_sensor;
+long sensorStateTime;
 
 void setup() {
     // Begin serial connect
@@ -156,15 +167,31 @@ void setup() {
     Serial.println("Begin of setup");
 
     // Init pins
-    pinMode(IR_sensor, INPUT);
+    pinMode(IR_sensor_pin, INPUT);
+    previous_state_of_sensor = digitalRead(IR_sensor_pin);
+    sensorStateTime = millis();
 
     // Init LED's
     red_led1.Init(4, 2);
+    red_led1.On();
     red_led2.Init(16, 3);
+    red_led2.On();
+
 
     // Init motors
     left_motor.Init(27, 26, 14, 30000, 0, 8, 200);
     right_motor.Init(25, 33, 32, 30000, 1, 8, 200);
+
+    //create a task that will be executed in the Task1code() function, with priority 1 and executed on core 0
+    xTaskCreatePinnedToCore(
+            CoreZeroLoop,   /* Task function. */
+            "motor control loop",     /* name of task. */
+            10000,       /* Stack size of task */
+            NULL,        /* parameter of the task */
+            10,           /* priority of the task */
+            &TaskHandler,      /* Task handle to keep track of created task */
+            0);          /* pin task to core 0 */
+    delay(500);
 
     // Debug info
     Serial.print("Setup() running on core ");
@@ -172,8 +199,21 @@ void setup() {
     Serial.println("End of setup");
 }
 
+void CoreZeroLoop( void * pvParameters ){
+    // Setup of second core
+    Serial.print("Start of second core");
+
+    for(;;){
+        Serial.print("Message form core zero");
+    }
+}
+
 void loop() {
-    //Serial.println(digitalRead(IR_sensor));
+    if (digitalRead(IR_sensor_pin) != previous_state_of_sensor) {
+        previous_state_of_sensor = digitalRead(IR_sensor_pin);
+        Serial.println("Sensor changed state, previouse sensor state was " + String(millis()-sensorStateTime) + " milliseconds long");
+        sensorStateTime = millis();
+    }
 
     /*
     left_motor.Forward();
