@@ -1,14 +1,6 @@
-/* links:
- *      - multi threading: https://randomnerdtutorials.com/esp32-dual-core-arduino-ide/
- *                         and https://savjee.be/2020/01/multitasking-esp32-arduino-freertos/
- *      - hobby gear motor: https://randomnerdtutorials.com/esp32-dc-motor-l298n-motor-driver-control-speed-direction/
- * docs:
- *      - multi threading: https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/freertos.html
- */
-
 #include <Arduino.h>  // remove this line if you are using arduino
 
-void CoreZeroLoop( void * pvParameters );
+#include "SSD1306Wire.h"  // library for SSD1306
 
 class Motor {
 public:
@@ -146,8 +138,12 @@ public:
 };
 
 // INIT AND SET VARIABLES
+// Init and set black and white sensor objects
 int IR_sensor_pin = 7;  // Pin of the black and white sensor
 int circumference = 33; // diameter of the sensor location from center of wheel in millimeters
+
+// Init display
+SSD1306Wire display(0x3c, 5, 17);
 
 // INIT VARIABLES
 // Init motor objects
@@ -163,8 +159,18 @@ int previous_output_of_IR_sensor;  // output of sensor from previous loop
 long sensor_output_time;  // moment in time when the sensor changes output
 float car_speed;  // cm per milliseconds traveling calculated by radius of wheel and RPS
 
-// Init multi threading task handler object
-TaskHandle_t TaskHandler;
+void read_car_speed () {
+    if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
+        previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
+        try {
+            car_speed = circumference/(((millis()-sensor_output_time)*2));  // calculating the speed in cm/milliseconds
+            Serial.println("Speed updated current speed is " + String(car_speed));
+        } catch (...) {
+            Serial.println("Failed updating speed");
+        }
+        sensor_output_time = millis();
+    }
+}
 
 void setup() {
     // Begin serial connect
@@ -176,6 +182,19 @@ void setup() {
     red_led1.On();
     red_led2.Init(16, 3);
     red_led2.On();
+
+    // Init display
+    display.init();
+    display.clear();
+    display.flipScreenVertically();
+    display.display();
+
+    // Draw on Display
+    display.clear();
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 0, "Setup");
+    display.display();
 
     // Init sensor and sensor objects
     pinMode(IR_sensor_pin, INPUT);
@@ -191,19 +210,6 @@ void setup() {
     Serial.println(xPortGetCoreID());
     Serial.println("End of setup");
 }
-
-void read_car_speed () {
-    if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
-        previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
-        try {
-            car_speed = circumference/(((millis()-sensor_output_time)*2));  // calculating the speed in cm/milliseconds
-            Serial.println("Speed updated current speed is " + String(car_speed));
-        } catch (...) {
-            Serial.println("Failed updating speed");
-        }
-        sensor_output_time = millis();
-    }
-};
 
 void loop() {
     read_car_speed();
