@@ -1,4 +1,0 @@
-/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles/rebuild_cache.dir
-/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles/Debug.dir
-/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles/edit_cache.dir
-/home/yoisy/src/Arduino Thomas the Tank Engine/cmake-build-esp32dev/CMakeFiles/Production.dir

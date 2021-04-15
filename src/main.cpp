@@ -145,31 +145,31 @@ public:
     }
 };
 
-// Init motor object
+// INIT AND SET VARIABLES
+int IR_sensor_pin = 7;  // Pin of the black and white sensor
+int circumference = 33; // diameter of the sensor location from center of wheel in millimeters
+
+// INIT VARIABLES
+// Init motor objects
 Motor left_motor;
 Motor right_motor;
 
-// Init LED object
+// Init LED objects
 LED red_led1;
 LED red_led2;
 
+// Init black and white sensor objects
+int previous_output_of_IR_sensor;  // output of sensor from previous loop
+long sensor_output_time;  // moment in time when the sensor changes output
+float car_speed;  // cm per milliseconds traveling calculated by radius of wheel and RPS
+
 // Init multi threading task handler object
 TaskHandle_t TaskHandler;
-
-// Init variables
-const int IR_sensor_pin = 17;
-int previous_state_of_sensor;
-long sensorStateTime;
 
 void setup() {
     // Begin serial connect
     Serial.begin(115200);
     Serial.println("Begin of setup");
-
-    // Init pins
-    pinMode(IR_sensor_pin, INPUT);
-    previous_state_of_sensor = digitalRead(IR_sensor_pin);
-    sensorStateTime = millis();
 
     // Init LED's
     red_led1.Init(4, 2);
@@ -177,21 +177,14 @@ void setup() {
     red_led2.Init(16, 3);
     red_led2.On();
 
+    // Init sensor and sensor objects
+    pinMode(IR_sensor_pin, INPUT);
+    previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
+    sensor_output_time = millis();
 
     // Init motors
     left_motor.Init(27, 26, 14, 30000, 0, 8, 200);
     right_motor.Init(25, 33, 32, 30000, 1, 8, 200);
-
-    //create a task that will be executed in the Task1code() function, with priority 1 and executed on core 0
-    xTaskCreatePinnedToCore(
-            CoreZeroLoop,   /* Task function. */
-            "motor control loop",     /* name of task. */
-            10000,       /* Stack size of task */
-            NULL,        /* parameter of the task */
-            10,           /* priority of the task */
-            &TaskHandler,      /* Task handle to keep track of created task */
-            0);          /* pin task to core 0 */
-    delay(500);
 
     // Debug info
     Serial.print("Setup() running on core ");
@@ -199,32 +192,19 @@ void setup() {
     Serial.println("End of setup");
 }
 
-void CoreZeroLoop( void * pvParameters ){
-    // Setup of second core
-    Serial.print("Start of second core");
-
-    for(;;){
-        Serial.print("Message form core zero");
+void read_car_speed () {
+    if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
+        previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
+        try {
+            car_speed = circumference/(((millis()-sensor_output_time)*2));  // calculating the speed in cm/milliseconds
+            Serial.println("Speed updated current speed is " + String(car_speed));
+        } catch (...) {
+            Serial.println("Failed updating speed");
+        }
+        sensor_output_time = millis();
     }
-}
+};
 
 void loop() {
-    if (digitalRead(IR_sensor_pin) != previous_state_of_sensor) {
-        previous_state_of_sensor = digitalRead(IR_sensor_pin);
-        Serial.println("Sensor changed state, previouse sensor state was " + String(millis()-sensorStateTime) + " milliseconds long");
-        sensorStateTime = millis();
-    }
-
-    /*
-    left_motor.Forward();
-    right_motor.Forward();
-    delay(2000);
-
-    left_motor.Stop();
-    right_motor.Stop();
-    delay(1000);
-
-    left_motor.duty_cycle = 150;
-    left_motor.UpdateDutyCycle();
-     */
+    read_car_speed();
 }

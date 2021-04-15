@@ -1,5 +1,6 @@
 # cutsom
 .idea/
+.pio/
 
 # Prerequisites
 *.d
