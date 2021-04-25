@@ -139,8 +139,8 @@ public:
 
 // INIT AND SET VARIABLES
 // Init and set black and white sensor objects
-int IR_sensor_pin = 7;  // Pin of the black and white sensor
-int circumference = 33; // diameter of the sensor location from center of wheel in millimeters
+int IR_sensor_pin = 13;  // Pin of the black and white sensor
+int circumference = 33; // circumference of the sensor location from center of wheel in millimeters
 
 // Init display
 SSD1306Wire display(0x3c, 5, 17);
@@ -213,4 +213,6 @@ void setup() {
 
 void loop() {
     read_car_speed();
+    left_motor.Forward();
+    right_motor.Forward();
 }
