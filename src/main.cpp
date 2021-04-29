@@ -42,16 +42,16 @@ public:
     }
 
     void Backwards() const {
-        Serial.print("Moving motor Backwards at pwm channel ");
-        Serial.println(pwm_channel);
+        //Serial.print("Moving motor Backwards at pwm channel ");
+        //Serial.println(pwm_channel);
 
         digitalWrite(pin_1, HIGH);
         digitalWrite(pin_2, LOW);
     }
 
     void Forward() const {
-        Serial.print("Moving motor Forward at pwm channel ");
-        Serial.println(pwm_channel);
+        //Serial.print("Moving motor Forward at pwm channel ");
+        //Serial.println(pwm_channel);
 
         digitalWrite(pin_1, LOW);
         digitalWrite(pin_2, HIGH);
@@ -139,8 +139,8 @@ public:
 
 // INIT AND SET VARIABLES
 // Init and set black and white sensor objects
-int IR_sensor_pin = 7;  // Pin of the black and white sensor
-int circumference = 33; // diameter of the sensor location from center of wheel in millimeters
+int IR_sensor_pin = 2;  // Pin of the black and white sensor
+int circumference = 30; // circumference of the wheel in millimeters
 
 // Init display
 SSD1306Wire display(0x3c, 5, 17);
@@ -160,10 +160,12 @@ long sensor_output_time;  // moment in time when the sensor changes output
 float car_speed;  // cm per milliseconds traveling calculated by radius of wheel and RPS
 
 void read_car_speed () {
+    Serial.println(digitalRead(IR_sensor_pin));
     if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
         previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
         try {
             car_speed = circumference/(((millis()-sensor_output_time)*2));  // calculating the speed in cm/milliseconds
+            Serial.println("Time in current previous state is " + String(millis()-sensor_output_time));
             Serial.println("Speed updated current speed is " + String(car_speed));
         } catch (...) {
             Serial.println("Failed updating speed");
@@ -189,13 +191,6 @@ void setup() {
     display.flipScreenVertically();
     display.display();
 
-    // Draw on Display
-    display.clear();
-    display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 0, "Setup");
-    display.display();
-
     // Init sensor and sensor objects
     pinMode(IR_sensor_pin, INPUT);
     previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
@@ -209,8 +204,18 @@ void setup() {
     Serial.print("Setup() running on core ");
     Serial.println(xPortGetCoreID());
     Serial.println("End of setup");
+
+    display.clear();
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 0, "Setup finished");
+    display.display();
 }
 
 void loop() {
     read_car_speed();
+    left_motor.Forward();
+    right_motor.Forward();
+
+    delay(10);
 }
