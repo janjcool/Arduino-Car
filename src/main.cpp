@@ -141,6 +141,7 @@ public:
 // Init and set black and white sensor objects
 int IR_sensor_pin = 15;  // Pin of the black and white sensor
 int circumference = 188495; // circumference of the wheel in millimeters
+long read_colors; // for testing reasons so i can perfect the circumference
 
 // Init display
 SSD1306Wire display(0x3c, 5, 17);
@@ -160,17 +161,20 @@ long sensor_output_time;  // moment in time when the sensor changes output
 long car_speed;  // micrometer/milliseconds traveling calculated by radius of wheel and RPS
 
 void read_car_speed () {
-    Serial.println(digitalRead(IR_sensor_pin));
+    Serial.println("Sensor read is " + String(digitalRead(IR_sensor_pin)));
     if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
+        read_colors++;
         previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
         try {
             car_speed = circumference/((millis()-sensor_output_time)*2);  // calculating the speed in micrometer/milliseconds
             Serial.println("Time of full wheel rotation is " + String((millis()-sensor_output_time)*2));
             Serial.println("Speed updated current speed is " + String(car_speed) + " (in micrometer/milliseconds )");
+            Serial.println("Colors gone by is " + String(read_colors));
             display.clear();
             display.setTextAlignment(TEXT_ALIGN_LEFT);
             display.setFont(ArialMT_Plain_10);
-            display.drawString(0, 0, "Speed: " + String(car_speed));
+            display.drawString(0, 15, "Speed: " + String(car_speed));
+            display.drawString(0, 30, "Colors gone by: " + String(read_colors));
             display.display();
         } catch (...) {
             Serial.println("Failed updating speed");
