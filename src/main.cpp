@@ -167,6 +167,11 @@ void read_car_speed () {
             car_speed = circumference/((millis()-sensor_output_time)*2);  // calculating the speed in micrometer/milliseconds
             Serial.println("Time of full wheel rotation is " + String((millis()-sensor_output_time)*2));
             Serial.println("Speed updated current speed is " + String(car_speed) + " (in micrometer/milliseconds )");
+            display.clear();
+            display.setTextAlignment(TEXT_ALIGN_LEFT);
+            display.setFont(ArialMT_Plain_10);
+            display.drawString(0, 0, "Speed: " + String(car_speed));
+            display.display();
         } catch (...) {
             Serial.println("Failed updating speed");
         }
@@ -191,13 +196,6 @@ void setup() {
     display.flipScreenVertically();
     display.display();
 
-    // Draw on Display
-    display.clear();
-    display.setTextAlignment(TEXT_ALIGN_LEFT);
-    display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 0, "Setup");
-    display.display();
-
     // Init sensor and sensor objects
     pinMode(IR_sensor_pin, INPUT);
     previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
@@ -211,6 +209,12 @@ void setup() {
     Serial.print("Setup() running on core ");
     Serial.println(xPortGetCoreID());
     Serial.println("End of setup");
+
+    display.clear();
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 0, "Setup finished");
+    display.display();
 }
 
 void loop() {
