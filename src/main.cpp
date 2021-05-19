@@ -221,12 +221,22 @@ void setup() {
 void loop() {
     read_car_speed();
 
+    if (millis() <= 180000) {
+        left_motor.duty_cycle = map(millis(), 0, 180000, 0, 255);
+        right_motor.duty_cycle = map(millis(), 0, 180000, 0, 255);
+    } else {
+        left_motor.Stop();
+        right_motor.Stop();
+    };
+
     display.clear();
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
     display.drawString(0, 15, "Speed: " + String(car_speed));
-    display.drawString(0, 30, "Colors gone by: " + String(read_colors));
-    display.drawString(0, 45, "Time: " + String(millis()));
+    display.drawString(0, 30, "Left duty cycle: " + String(left_motor.duty_cycle));
+    display.drawString(0, 45, "Left duty cycle: " + String(right_motor.duty_cycle));
+    display.drawString(0, 60, "Colors gone by: " + String(read_colors));
+    display.drawString(0, 75, "Time: " + String(millis()));
     display.display();
 
     delay(10);
