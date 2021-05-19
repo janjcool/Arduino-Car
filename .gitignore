@@ -34,3 +34,9 @@
 *.exe
 *.out
 *.app
+
+cmake-build-debug/
+
+cmake-build-esp32dev/
+
+cmake-build-nodemcu-32s/
