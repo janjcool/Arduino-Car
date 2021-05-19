@@ -170,12 +170,6 @@ void read_car_speed () {
             Serial.println("Time of full wheel rotation is " + String((millis()-sensor_output_time)*2));
             Serial.println("Speed updated current speed is " + String(car_speed) + " (in micrometer/milliseconds )");
             Serial.println("Colors gone by is " + String(read_colors));
-            display.clear();
-            display.setTextAlignment(TEXT_ALIGN_LEFT);
-            display.setFont(ArialMT_Plain_10);
-            display.drawString(0, 15, "Speed: " + String(car_speed));
-            display.drawString(0, 30, "Colors gone by: " + String(read_colors));
-            display.display();
         } catch (...) {
             Serial.println("Failed updating speed");
         }
@@ -219,12 +213,21 @@ void setup() {
     display.setFont(ArialMT_Plain_10);
     display.drawString(0, 0, "Setup finished");
     display.display();
+
+    left_motor.Forward();
+    right_motor.Forward();
 }
 
 void loop() {
     read_car_speed();
-    left_motor.Forward();
-    right_motor.Forward();
+
+    display.clear();
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.setFont(ArialMT_Plain_10);
+    display.drawString(0, 15, "Speed: " + String(car_speed));
+    display.drawString(0, 30, "Colors gone by: " + String(read_colors));
+    display.drawString(0, 45, "Time: " + String(millis()));
+    display.display();
 
     delay(10);
 }
