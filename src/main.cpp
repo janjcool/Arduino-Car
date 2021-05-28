@@ -1,6 +1,8 @@
 #include <Arduino.h>  // remove this line if you are using arduino
 
 #include "SSD1306Wire.h"  // library for SSD1306
+#include "SoundData.h"  // The music file
+#include "XT_DAC_Audio.h"  // The music playing library
 
 class Motor {
 public:
@@ -146,6 +148,10 @@ long read_colors; // for testing reasons so i can perfect the circumference
 // Init display
 SSD1306Wire display(0x3c, 5, 17);
 
+// Init sound library
+XT_Wav_Class Sound(rawData);
+XT_DAC_Audio_Class DacAudio(25,0);
+
 // INIT VARIABLES
 // Init motor objects
 Motor left_motor;
@@ -201,7 +207,7 @@ void setup() {
 
     // Init motors
     left_motor.Init(27, 26, 14, 30000, 0, 8, 200);
-    right_motor.Init(25, 33, 32, 30000, 1, 8, 200);
+    right_motor.Init(35, 33, 32, 30000, 1, 8, 200);
 
     // Debug info
     Serial.print("Setup() running on core ");
@@ -214,20 +220,17 @@ void setup() {
     display.drawString(0, 0, "Setup finished");
     display.display();
 
-    left_motor.Forward();
-    right_motor.Forward();
+    left_motor.Stop();
+    right_motor.Stop();
 }
 
 void loop() {
     read_car_speed();
 
-    if (millis() <= 180000) {
-        left_motor.duty_cycle = map(millis(), 0, 180000, 0, 255);
-        right_motor.duty_cycle = map(millis(), 0, 180000, 0, 255);
-    } else {
-        left_motor.Stop();
-        right_motor.Stop();
-    };
+    DacAudio.FillBuffer();
+    if (Sound.Playing == false) {
+        DacAudio.Play(&Sound);
+    git}
 
     display.clear();
     display.setTextAlignment(TEXT_ALIGN_LEFT);
@@ -236,7 +239,7 @@ void loop() {
     display.drawString(0, 30, "Left duty cycle: " + String(left_motor.duty_cycle));
     display.drawString(0, 45, "Left duty cycle: " + String(right_motor.duty_cycle));
     display.drawString(0, 60, "Colors gone by: " + String(read_colors));
-    display.drawString(0, 75, "Time: " + String(millis()));
+    display.drawString(0, 0, "Time: " + String(millis()));
     display.display();
 
     delay(10);
