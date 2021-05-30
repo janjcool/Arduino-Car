@@ -167,7 +167,6 @@ long sensor_output_time;  // moment in time when the sensor changes output
 long car_speed;  // micrometer/milliseconds traveling calculated by radius of wheel and RPS
 
 void read_car_speed () {
-    Serial.println("Sensor read is " + String(digitalRead(IR_sensor_pin)));
     if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
         read_colors++;
         previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
@@ -230,17 +229,39 @@ void loop() {
     DacAudio.FillBuffer();
     if (Sound.Playing == false) {
         DacAudio.Play(&Sound);
-    git}
+    }
 
-    display.clear();
+    if (millis() <= 10500 and millis() >= 10000) {
+        right_motor.Stop();
+        left_motor.Stop();
+        Serial.println("------------------------------------");
+        Serial.println("Time: " + String(millis()));
+        Serial.println("Speed: " + String(car_speed));
+        Serial.println("Left duty cycle: " + String(left_motor.duty_cycle));
+        Serial.println("Right duty cycle: " + String(right_motor.duty_cycle));
+        Serial.println("Sound: " + String(Sound.Playing));
+        Serial.println("Circumference: " + String(circumference));
+        Serial.println("Sensor_output_time: " + String(sensor_output_time));
+        Serial.println("IR sensor pin: " + String(digitalRead(IR_sensor_pin)));
+    }
+
+    /*display.clear();
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
-    display.drawString(0, 15, "Speed: " + String(car_speed));
-    display.drawString(0, 30, "Left duty cycle: " + String(left_motor.duty_cycle));
-    display.drawString(0, 45, "Left duty cycle: " + String(right_motor.duty_cycle));
-    display.drawString(0, 60, "Colors gone by: " + String(read_colors));
-    display.drawString(0, 0, "Time: " + String(millis()));
+    Serial.println("------------------------------------");
+    Serial.println("Time: " + String(millis()));
+    Serial.println("Speed: " + String(car_speed));
+    Serial.println("Left duty cycle: " + String(left_motor.duty_cycle));
+    Serial.println("Right duty cycle: " + String(right_motor.duty_cycle));
+    Serial.println("Sound: " + String(Sound.Playing));
+    Serial.println("Circumference: " + String(circumference));
+    Serial.println("Sensor_output_time: " + String(sensor_output_time));
+    Serial.println("IR sensor pin: " + String(digitalRead(IR_sensor_pin)));
+    display.drawString(0, 15, "Time: " + String(millis()));
+    display.drawString(0, 30, "Speed: " + String(car_speed));
+    display.drawString(0, 45, "Duty cycle: L:" + String(left_motor.duty_cycle) + " R: " + String(right_motor.duty_cycle));
     display.display();
+     */
 
     delay(10);
 }
