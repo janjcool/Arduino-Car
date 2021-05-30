@@ -163,8 +163,8 @@ LED red_led2;
 
 // Init black and white sensor objects
 int previous_output_of_IR_sensor;  // output of sensor from previous loop
-long sensor_output_time;  // moment in time when the sensor changes output
-long car_speed;  // micrometer/milliseconds traveling calculated by radius of wheel and RPS
+float sensor_output_time;  // moment in time when the sensor changes output
+float car_speed;  // micrometer/milliseconds traveling calculated by radius of wheel and RPS
 
 void read_car_speed () {
     if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
