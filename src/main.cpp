@@ -142,7 +142,7 @@ public:
 // INIT AND SET VARIABLES
 // Init and set black and white sensor objects
 int IR_sensor_pin = 15;  // Pin of the black and white sensor
-int circumference = 188495; // circumference of the wheel in millimeters
+int circumference = 21221; // circumference of the wheel in micrometer
 long read_colors; // for testing reasons so i can perfect the circumference
 
 // Init display
@@ -165,6 +165,7 @@ LED red_led2;
 int previous_output_of_IR_sensor;  // output of sensor from previous loop
 float sensor_output_time;  // moment in time when the sensor changes output
 float car_speed;  // micrometer/milliseconds traveling calculated by radius of wheel and RPS
+float total_distance_traversed;
 
 void read_car_speed () {
     if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
@@ -172,9 +173,9 @@ void read_car_speed () {
         previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
         try {
             car_speed = circumference/((millis()-sensor_output_time)*2);  // calculating the speed in micrometer/milliseconds
-            Serial.println("Time of full wheel rotation is " + String((millis()-sensor_output_time)*2));
+            total_distance_traversed = read_colors/2*circumference;  // calculate the traveled distance in micrometer
             Serial.println("Speed updated current speed is " + String(car_speed) + " (in micrometer/milliseconds )");
-            Serial.println("Colors gone by is " + String(read_colors));
+            Serial.println("Total distance traversed is " + String(total_distance_traversed));
         } catch (...) {
             Serial.println("Failed updating speed");
         }
@@ -219,8 +220,8 @@ void setup() {
     display.drawString(0, 0, "Setup finished");
     display.display();
 
-    left_motor.Stop();
-    right_motor.Stop();
+    left_motor.Forward();
+    right_motor.Forward();
 }
 
 void loop() {
@@ -231,21 +232,7 @@ void loop() {
         DacAudio.Play(&Sound);
     }
 
-    if (millis() <= 10500 and millis() >= 10000) {
-        right_motor.Stop();
-        left_motor.Stop();
-        Serial.println("------------------------------------");
-        Serial.println("Time: " + String(millis()));
-        Serial.println("Speed: " + String(car_speed));
-        Serial.println("Left duty cycle: " + String(left_motor.duty_cycle));
-        Serial.println("Right duty cycle: " + String(right_motor.duty_cycle));
-        Serial.println("Sound: " + String(Sound.Playing));
-        Serial.println("Circumference: " + String(circumference));
-        Serial.println("Sensor_output_time: " + String(sensor_output_time));
-        Serial.println("IR sensor pin: " + String(digitalRead(IR_sensor_pin)));
-    }
-
-    /*display.clear();
+    display.clear();
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
     Serial.println("------------------------------------");
@@ -257,11 +244,10 @@ void loop() {
     Serial.println("Circumference: " + String(circumference));
     Serial.println("Sensor_output_time: " + String(sensor_output_time));
     Serial.println("IR sensor pin: " + String(digitalRead(IR_sensor_pin)));
-    display.drawString(0, 15, "Time: " + String(millis()));
-    display.drawString(0, 30, "Speed: " + String(car_speed));
+    display.drawString(0, 15, "t: " + String(millis()) + " v: " + String(car_speed));
+    display.drawString(0, 30, "s: " + String(total_distance_traversed));
     display.drawString(0, 45, "Duty cycle: L:" + String(left_motor.duty_cycle) + " R: " + String(right_motor.duty_cycle));
     display.display();
-     */
 
     delay(10);
 }
