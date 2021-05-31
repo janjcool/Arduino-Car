@@ -127,16 +127,13 @@ def main():
             y_temp_list = [y] * len(x_temp_list)
             plt.plot(x_temp_list, y_temp_list, "r")
 
-    plt.axline((3, 0), (8, 70), color="red")
+    plt.axline((0, 0), (1, 2.66), color="red")
 
     # ------------ MAKE ROUTES ------------ #
-    calculate_routes(1, 0, "purple", False, True)
-    calculate_routes(2, 0, "green", False, True)
-    calculate_routes(3, 0, "red", False, True)
-    calculate_routes(0, 2, "blue", False, True, 160)
 
     plt.axis([0, TIME_AXIS_RANGE, 0, POSITION_AXIS_RANGE])
     plt.show()
+
 
 if __name__ == '__main__':
     main()
