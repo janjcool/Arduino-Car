@@ -100,7 +100,7 @@
 #define FNOTE_DS8 4978
 
 
-// These notes index the above in the array (after removal of negative sign)
+// These notes list_index the above in the array (after removal of negative sign)
 #define NOTE_SILENCE 0
 #define NOTE_B0  -1
 #define NOTE_C1  -2

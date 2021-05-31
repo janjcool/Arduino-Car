@@ -368,7 +368,7 @@ class XT_MusicScore_Class:public XT_PlayListItem_Class
 															// (the default) 5=1.25 beats etc. up to
 															// 126 (31.5 beats)
 															// The note should be passed as a negative value
-															// of the real index into the frequency array
+															// of the real list_index into the frequency array
 															// you do not need to worry about this if you
 															// use the preset defines in the Pitches.h
 															// file

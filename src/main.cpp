@@ -59,14 +59,13 @@ public:
         digitalWrite(pin_2, HIGH);
     }
 
-    void UpdateDutyCycle() const {
-        Serial.print("Update duty cycle: duty cycle \"");
-        Serial.print(duty_cycle);
-        Serial.print("\" at pwm channel \"");
-        Serial.print(pwm_channel);
-        Serial.println("\"");
-
+    void UpdateDutyCycle() {
+        Serial.println("Update duty cycle to " + String(duty_cycle) + " at pwm channel " + String(pwm_channel));
         ledcWrite(pwm_channel, duty_cycle);
+    }
+
+    uint32_t GetDutyCycle() const {
+        return ledcRead(pwm_channel);
     }
 };
 
@@ -94,7 +93,7 @@ public:
         ledcAttachPin(pin, pwm_channel);
         UpdateDutyCycle();
 
-        Serial.print("Led initialized at pwm channel ");
+        Serial.println("Led initialized at pwm channel ");
         Serial.println(pwm_channel);
     }
 
@@ -129,12 +128,7 @@ public:
     }
 
     void UpdateDutyCycle() const {
-        Serial.print("Update duty cycle: duty cycle \"");
-        Serial.print(duty_cycle);
-        Serial.print("\" at pwm channel \"");
-        Serial.print(pwm_channel);
-        Serial.println("\"");
-
+        Serial.print("Update duty cycle to " + String(duty_cycle) + " at pwm channel " + String(pwm_channel));
         ledcWrite(pwm_channel, duty_cycle);
     }
 };
@@ -166,6 +160,11 @@ int previous_output_of_IR_sensor;  // output of sensor from previous loop
 float sensor_output_time;  // moment in time when the sensor changes output
 float car_speed;  // micrometer/milliseconds traveling calculated by radius of wheel and RPS
 float total_distance_traversed;
+
+// For exercise B
+float pos_array[500] = {};
+float time_array[500] = {};
+int list_index = 0;
 
 void read_car_speed () {
     if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
@@ -224,8 +223,42 @@ void setup() {
     right_motor.Forward();
 }
 
+int array_printed = 0;
+int i = 0;
+
 void loop() {
     read_car_speed();
+
+    if (millis() <= 20000) {
+        left_motor.duty_cycle = map(millis(), 0, 20000, 0, 255);
+        left_motor.UpdateDutyCycle();
+        right_motor.duty_cycle = map(millis(), 0, 20000, 0, 255);
+        left_motor.UpdateDutyCycle();
+
+        pos_array[list_index] = total_distance_traversed;
+        time_array[list_index] = millis() / 1000.00;
+        list_index++;
+    } else if (millis() <= 20500){
+        left_motor.Stop();
+        right_motor.Stop();
+        if (array_printed == 0) {
+            Serial.println(list_index);
+
+            array_printed = 1;
+            while (i < 500) {
+                Serial.print(String(pos_array[i]) + "\t");
+                i++;
+            }
+            i = 0;
+            Serial.println();
+            while (i < 500) {
+                Serial.print(String(time_array[i]) + "\t");
+                i++;
+            }
+            i = 0;
+            Serial.println();
+        }
+    };
 
     DacAudio.FillBuffer();
     if (Sound.Playing == false) {
@@ -235,19 +268,20 @@ void loop() {
     display.clear();
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
-    Serial.println("------------------------------------");
+    /*Serial.println("------------------------------------");
     Serial.println("Time: " + String(millis()));
     Serial.println("Speed: " + String(car_speed));
-    Serial.println("Left duty cycle: " + String(left_motor.duty_cycle));
-    Serial.println("Right duty cycle: " + String(right_motor.duty_cycle));
+    Serial.println("Left duty cycle: " + String(left_motor.GetDutyCycle()));
+    Serial.println("Right duty cycle: " + String(right_motor.GetDutyCycle()));
     Serial.println("Sound: " + String(Sound.Playing));
     Serial.println("Circumference: " + String(circumference));
     Serial.println("Sensor_output_time: " + String(sensor_output_time));
     Serial.println("IR sensor pin: " + String(digitalRead(IR_sensor_pin)));
+    */
     display.drawString(0, 15, "t: " + String(millis()) + " v: " + String(car_speed));
     display.drawString(0, 30, "s: " + String(total_distance_traversed));
-    display.drawString(0, 45, "Duty cycle: L:" + String(left_motor.duty_cycle) + " R: " + String(right_motor.duty_cycle));
+    display.drawString(0, 45, "Duty cycle: L:" + String(left_motor.GetDutyCycle()) + " R: " + String(right_motor.GetDutyCycle()));
     display.display();
 
-    delay(10);
+    delay(40);
 }

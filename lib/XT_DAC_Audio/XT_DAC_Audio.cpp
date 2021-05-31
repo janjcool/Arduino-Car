@@ -32,8 +32,8 @@
  *	Also, variables used by onTimer must be regular variables and cannot be
  *	the CLASSES,because it is an interrupt routine and accessing variables
  *  belonging to objects was causing crashing in the ISR
- *  To avoid re-entrancy problems, the ISR onTimer() must change only the "play" index and the
- *	mainline code must change only the "fill" index.   Otherwise we can get corruption if
+ *  To avoid re-entrancy problems, the ISR onTimer() must change only the "play" list_index and the
+ *	mainline code must change only the "fill" list_index.   Otherwise we can get corruption if
  *	onTimer() does a pull while FillBuffer() is putting data in.
  *	Each can _look_ at the other's variables, but both cannot _change_ the same variable.
  */
@@ -850,7 +850,7 @@ uint8_t XT_MusicScore_Class::NextByte()
 			return 0;    	// return silence
 		}
 
-		Instrument->Note=abs(Score[ScoreIdx]);			// convert the negative value to positive index.
+		Instrument->Note=abs(Score[ScoreIdx]);			// convert the negative value to positive list_index.
 		ScoreIdx++;										// move to next note
 
 		// set length of play for instrument
