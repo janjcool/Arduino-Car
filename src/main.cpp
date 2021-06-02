@@ -161,11 +161,6 @@ float sensor_output_time;  // moment in time when the sensor changes output
 float car_speed;  // micrometer/milliseconds traveling calculated by radius of wheel and RPS
 float total_distance_traversed;
 
-// For exercise B
-float pos_array[500] = {};
-float time_array[500] = {};
-int list_index = 0;
-
 void read_car_speed () {
     if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
         read_colors++;
@@ -219,56 +214,39 @@ void setup() {
     display.drawString(0, 0, "Setup finished");
     display.display();
 
+    left_motor.duty_cycle = 214;
+    right_motor.duty_cycle = 214;
+
+    left_motor.UpdateDutyCycle();
+    right_motor.UpdateDutyCycle();
+
     left_motor.Forward();
     right_motor.Forward();
 }
 
-int array_printed = 0;
-int i = 0;
-
 void loop() {
     read_car_speed();
 
-    if (millis() <= 20000) {
-        left_motor.duty_cycle = map(millis(), 0, 20000, 0, 255);
-        left_motor.UpdateDutyCycle();
-        right_motor.duty_cycle = map(millis(), 0, 20000, 0, 255);
-        left_motor.UpdateDutyCycle();
+    if (millis() <= 5000) {
+        left_motor.duty_cycle = map(millis(), 0, 5000, 0, 255);
+        right_motor.duty_cycle = map(millis(), 0, 5000, 0, 255);
 
-        pos_array[list_index] = total_distance_traversed;
-        time_array[list_index] = millis() / 1000.00;
-        list_index++;
-    } else if (millis() <= 20500){
+        left_motor.UpdateDutyCycle();
+        right_motor.UpdateDutyCycle();
+    } else {
         left_motor.Stop();
         right_motor.Stop();
-        if (array_printed == 0) {
-            Serial.println(list_index);
-
-            array_printed = 1;
-            while (i < 500) {
-                Serial.print(String(pos_array[i]) + "\t");
-                i++;
-            }
-            i = 0;
-            Serial.println();
-            while (i < 500) {
-                Serial.print(String(time_array[i]) + "\t");
-                i++;
-            }
-            i = 0;
-            Serial.println();
-        }
-    };
-
-    DacAudio.FillBuffer();
-    if (Sound.Playing == false) {
-        DacAudio.Play(&Sound);
     }
+
+    //DacAudio.FillBuffer();
+    //if (Sound.Playing == false) {
+    //    DacAudio.Play(&Sound);
+    //}
 
     display.clear();
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.setFont(ArialMT_Plain_10);
-    /*Serial.println("------------------------------------");
+    Serial.println("------------------------------------");
     Serial.println("Time: " + String(millis()));
     Serial.println("Speed: " + String(car_speed));
     Serial.println("Left duty cycle: " + String(left_motor.GetDutyCycle()));
@@ -277,11 +255,10 @@ void loop() {
     Serial.println("Circumference: " + String(circumference));
     Serial.println("Sensor_output_time: " + String(sensor_output_time));
     Serial.println("IR sensor pin: " + String(digitalRead(IR_sensor_pin)));
-    */
     display.drawString(0, 15, "t: " + String(millis()) + " v: " + String(car_speed));
     display.drawString(0, 30, "s: " + String(total_distance_traversed));
     display.drawString(0, 45, "Duty cycle: L:" + String(left_motor.GetDutyCycle()) + " R: " + String(right_motor.GetDutyCycle()));
     display.display();
 
-    delay(40);
+    delay(100);
 }
