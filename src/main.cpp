@@ -1,8 +1,8 @@
 #include <Arduino.h>  // remove this line if you are using arduino
 
 #include "SSD1306Wire.h"  // library for SSD1306
-#include "SoundData.h"  // The music file
-#include "XT_DAC_Audio.h"  // The music playing library
+#include "SoundData.h"  // the music file
+#include "XT_DAC_Audio.h"  // the music playing library
 
 class Motor {
 public:
@@ -11,6 +11,7 @@ public:
     int pin_1{};
     int pin_2{};
 
+    // The function to initialise the class
     void Init(int MotorPin1, int MotorPin2, int enable1Pin, int freq,
               int MotorPWMChannel, int resolution, int MotorDutyCycle) {
         Serial.println("Initializing motor");
@@ -31,29 +32,25 @@ public:
         ledcAttachPin(enable1Pin, pwm_channel);
 
         ledcWrite(pwm_channel, duty_cycle);
-        Serial.print("Motor initialized at pwm channel ");
-        Serial.println(pwm_channel);
+        Serial.println("Motor initialized at pwm channel " + String(pwm_channel));
     }
 
     void Stop() const {
-        Serial.print("Stop motor at pwm channel ");
-        Serial.println(pwm_channel);
+        Serial.println("Stop motor at pwm channel " + String(pwm_channel));
 
         digitalWrite(pin_1, LOW);
         digitalWrite(pin_2, LOW);
     }
 
     void Backwards() const {
-        //Serial.print("Moving motor Backwards at pwm channel ");
-        //Serial.println(pwm_channel);
+        Serial.println("Moving motor Backwards at pwm channel " + String(pwm_channel));
 
         digitalWrite(pin_1, HIGH);
         digitalWrite(pin_2, LOW);
     }
 
     void Forward() const {
-        //Serial.print("Moving motor Forward at pwm channel ");
-        //Serial.println(pwm_channel);
+        Serial.println("Moving motor Forward at pwm channel " + String(pwm_channel));
 
         digitalWrite(pin_1, LOW);
         digitalWrite(pin_2, HIGH);
@@ -93,8 +90,7 @@ public:
         ledcAttachPin(pin, pwm_channel);
         UpdateDutyCycle();
 
-        Serial.println("Led initialized at pwm channel ");
-        Serial.println(pwm_channel);
+        Serial.println("Led initialized at pwm channel " + String(pwm_channel));
     }
 
     void Off() {
@@ -165,7 +161,7 @@ void read_car_speed () {
     if (digitalRead(IR_sensor_pin) != previous_output_of_IR_sensor) {
         read_colors++;
         previous_output_of_IR_sensor = digitalRead(IR_sensor_pin);
-        try {
+        try {  // run catch if there is an error in the try code
             car_speed = circumference/((millis()-sensor_output_time)*2);  // calculating the speed in micrometer/milliseconds
             total_distance_traversed = read_colors/2*circumference;  // calculate the traveled distance in micrometer
             Serial.println("Speed updated current speed is " + String(car_speed) + " (in micrometer/milliseconds )");
@@ -214,12 +210,15 @@ void setup() {
     display.drawString(0, 0, "Setup finished");
     display.display();
 
+    // Set motor speed
     left_motor.duty_cycle = 214;
     right_motor.duty_cycle = 214;
 
+    // Update motor speed
     left_motor.UpdateDutyCycle();
     right_motor.UpdateDutyCycle();
 
+    // Set motor direction
     left_motor.Forward();
     right_motor.Forward();
 }
