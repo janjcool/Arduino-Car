@@ -15,7 +15,7 @@ x_yellow_list = []
 def calculate_routes(x_offset, y_offset, color, go_trough_yellow, light1=True, light2=True, light3=True,
                      disable_slow_routes=False, slow_threshold=60):
     # ------------ CALCULATE ROUTES ------------ #
-    ricos = np.arange(0.05, 20, 0.005)
+    ricos = np.arange(0.05, 35, 0.005)
     good_ricos = []
 
     for rico in ricos:
@@ -137,8 +137,9 @@ def main():
     calculate_routes(0, 0, "green", True, True, True, True)
 
     plt.axline((0, 0), (1, 35), color="red")
-    plt.axline((0, 0), (1, 8), color="purple")
-    plt.axline((0, 0), (1, 7.225), color="purple")
+    plt.axline((0, 0), (1, 11), color="red")
+    plt.axline((0, 0), (1, 20), color="purple")
+    plt.axline((0, 0), (1, 17.15), color="purple")
 
     plt.axis([0, TIME_AXIS_RANGE, 0, POSITION_AXIS_RANGE])
     plt.show()
