@@ -12,21 +12,26 @@ x_red_list = []
 x_yellow_list = []
 
 
-def calculate_routes(x_offset, y_offset, color, go_trough_yellow, disable_slow_routes=False, slow_threshold=60):
+def calculate_routes(x_offset, y_offset, color, go_trough_yellow, light1=True, light2=True, light3=True, light4=True,
+                     disable_slow_routes=False, slow_threshold=60):
     # ------------ CALCULATE ROUTES ------------ #
     ricos = np.arange(0.05, 20, 0.005)
     good_ricos = []
 
     for rico in ricos:
         good_rico = True
+        light_pos_list = []
 
-        for light_pos in LIGHT_POINTS:
-            for x_temp_list in x_green_list:
-                begin, end = x_temp_list[0], x_temp_list[6]
-                x = light_pos / rico + x_offset + y_offset
+        if light1 is True:
+            light_pos_list.append(LIGHT_POINTS[0])
+        if light2 is True:
+            light_pos_list.append(LIGHT_POINTS[1])
+        if light3 is True:
+            light_pos_list.append(LIGHT_POINTS[2])
+        if light4 is True:
+            light_pos_list.append(LIGHT_POINTS[3])
 
-                if begin < x < end:
-                    good_rico = False
+        for light_pos in light_pos_list:
 
             if go_trough_yellow is False:
                 for x_temp_list in x_yellow_list:
@@ -127,11 +132,13 @@ def main():
             y_temp_list = [y] * len(x_temp_list)
             plt.plot(x_temp_list, y_temp_list, "r")
 
-    plt.axline((0, 0), (1, 2.66), color="red")
-
     # ------------ MAKE ROUTES ------------ #
 
-    calculate_routes(0, 0, "green", True, True)
+    calculate_routes(0, 0, "green", True, True, True, True, True)
+
+    plt.axline((0, 0), (1, 35), color="red")
+    plt.axline((0, 0), (1, 8), color="purple")
+    plt.axline((0, 0), (1, 7.5), color="purple")
 
     plt.axis([0, TIME_AXIS_RANGE, 0, POSITION_AXIS_RANGE])
     plt.show()
