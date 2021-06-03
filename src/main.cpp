@@ -227,9 +227,9 @@ void setup() {
 void loop() {
     read_car_speed();
 
-    if (millis() <= 5000) {
-        left_motor.duty_cycle = map(millis(), 0, 5000, 0, 255);
-        right_motor.duty_cycle = map(millis(), 0, 5000, 0, 255);
+    if (millis() <= 7000) {
+        left_motor.duty_cycle = map(millis(), 0, 7000, 130, 255);
+        right_motor.duty_cycle = map(millis(), 0, 7000, 130, 255);
 
         left_motor.UpdateDutyCycle();
         right_motor.UpdateDutyCycle();
