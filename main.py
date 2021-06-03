@@ -6,13 +6,13 @@ TIME_AXIS_RANGE: int = 150  # in seconds
 POSITION_AXIS_RANGE: int = 350  # in cm
 
 # INIT VARIABLES
-LIGHT_POINTS = [60, 160, 260, 320]
+LIGHT_POINTS = [60, 160, 260]
 x_green_list = []
 x_red_list = []
 x_yellow_list = []
 
 
-def calculate_routes(x_offset, y_offset, color, go_trough_yellow, light1=True, light2=True, light3=True, light4=True,
+def calculate_routes(x_offset, y_offset, color, go_trough_yellow, light1=True, light2=True, light3=True,
                      disable_slow_routes=False, slow_threshold=60):
     # ------------ CALCULATE ROUTES ------------ #
     ricos = np.arange(0.05, 20, 0.005)
@@ -28,8 +28,6 @@ def calculate_routes(x_offset, y_offset, color, go_trough_yellow, light1=True, l
             light_pos_list.append(LIGHT_POINTS[1])
         if light3 is True:
             light_pos_list.append(LIGHT_POINTS[2])
-        if light4 is True:
-            light_pos_list.append(LIGHT_POINTS[3])
 
         for light_pos in light_pos_list:
 
@@ -134,11 +132,11 @@ def main():
 
     # ------------ MAKE ROUTES ------------ #
 
-    calculate_routes(0, 0, "green", True, True, True, True, True)
+    calculate_routes(0, 0, "green", True, True, True, True)
 
     plt.axline((0, 0), (1, 35), color="red")
     plt.axline((0, 0), (1, 8), color="purple")
-    plt.axline((0, 0), (1, 7.5), color="purple")
+    plt.axline((0, 0), (1, 7.225), color="purple")
 
     plt.axis([0, TIME_AXIS_RANGE, 0, POSITION_AXIS_RANGE])
     plt.show()
