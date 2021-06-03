@@ -76,8 +76,8 @@ def main():
     ax.yaxis.set_major_locator(MultipleLocator(25))
     plt.grid(color='b', linestyle='-', linewidth=0.1)
     plt.grid(b=True, which='minor', color='b', linewidth=0.05, linestyle='--')
-    plt.xlabel('s(cm)')
-    plt.ylabel('t(s)')
+    plt.xlabel('t(s)')
+    plt.ylabel('s(cm)')
 
     x_list = np.arange(0, TIME_AXIS_RANGE + 100, 0.5)
 
