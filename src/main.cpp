@@ -226,9 +226,18 @@ void setup() {
 void loop() {
     read_car_speed();
 
-    if (millis() >= 20000) {
-        left_motor.Stop();
-        right_motor.Stop();
+    if (millis() <= 10000) {
+        left_motor.Forward();
+        right_motor.Forward();
+    } else if (millis() <= 10000) {
+        left_motor.Backwards();
+        right_motor.Backwards();
+    } else if (millis() <= 10000) {
+        left_motor.Backwards();
+        right_motor.Forward();
+    } else if (millis() <= 10000) {
+        right_motor.Backwards();
+        left_motor.Forward();
     }
 
     DacAudio.FillBuffer();
