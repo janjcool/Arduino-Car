@@ -80,22 +80,22 @@ def main():
     x_yellow_list_temp = []
     x_red_list_temp = []
 
-    index = 0
+    index = -1
 
     for x in x_list:
-        if index <= 6:
+        if index <= 5:
             x_green_list_temp.append(x)
-        elif index == 7:
+        elif index == 6:
             x_yellow_list_temp.append(x - 0.5)
             x_yellow_list_temp.append(x)
             x_red_list_temp.append(x)
-        elif index <= 13:
+        elif index <= 12:
             x_red_list_temp.append(x)
         else:
             x_green_list.append(x_green_list_temp)
             x_yellow_list.append(x_yellow_list_temp)
             x_red_list.append(x_red_list_temp)
-            index = -1
+            index = 0
             x_green_list_temp = []
             x_yellow_list_temp = []
             x_red_list_temp = []
@@ -130,6 +130,8 @@ def main():
     plt.axline((0, 0), (1, 2.66), color="red")
 
     # ------------ MAKE ROUTES ------------ #
+
+    calculate_routes(0, 0, "green", True, True)
 
     plt.axis([0, TIME_AXIS_RANGE, 0, POSITION_AXIS_RANGE])
     plt.show()
