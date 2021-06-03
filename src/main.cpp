@@ -211,8 +211,8 @@ void setup() {
     display.display();
 
     // Set motor speed
-    left_motor.duty_cycle = 214;
-    right_motor.duty_cycle = 214;
+    left_motor.duty_cycle = 160;
+    right_motor.duty_cycle = 160;
 
     // Update motor speed
     left_motor.UpdateDutyCycle();
@@ -226,21 +226,15 @@ void setup() {
 void loop() {
     read_car_speed();
 
-    if (millis() <= 7000) {
-        left_motor.duty_cycle = map(millis(), 0, 7000, 130, 255);
-        right_motor.duty_cycle = map(millis(), 0, 7000, 130, 255);
-
-        left_motor.UpdateDutyCycle();
-        right_motor.UpdateDutyCycle();
-    } else {
+    if (millis() >= 20000) {
         left_motor.Stop();
         right_motor.Stop();
     }
 
-    //DacAudio.FillBuffer();
-    //if (Sound.Playing == false) {
-    //    DacAudio.Play(&Sound);
-    //}
+    DacAudio.FillBuffer();
+    if (Sound.Playing == false) {
+        DacAudio.Play(&Sound);
+    }
 
     display.clear();
     display.setTextAlignment(TEXT_ALIGN_LEFT);
