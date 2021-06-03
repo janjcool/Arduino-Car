@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib.ticker import MultipleLocator
 
 TIME_AXIS_RANGE: int = 150  # in seconds
-POSITION_AXIS_RANGE: int = 350  # in cm
+POSITION_AXIS_RANGE: int = 320  # in cm
 
 # INIT VARIABLES
 LIGHT_POINTS = [60, 160, 260]
@@ -76,6 +76,8 @@ def main():
     ax.yaxis.set_major_locator(MultipleLocator(25))
     plt.grid(color='b', linestyle='-', linewidth=0.1)
     plt.grid(b=True, which='minor', color='b', linewidth=0.05, linestyle='--')
+    plt.xlabel('s(cm)')
+    plt.ylabel('t(s)')
 
     x_list = np.arange(0, TIME_AXIS_RANGE + 100, 0.5)
 
